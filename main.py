@@ -1,22 +1,31 @@
 import pygame
+import random
 
 class Game:
     def __init__(self):
         pygame.init()
-        width, height = 800, 600
-        self.screen = pygame.display.set_mode([width, height])
+        self.width = 500
+        self.height = 400
+        self.screen = pygame.display.set_mode([self.width, self.height])
         pygame.display.set_caption('Snake.py')
         self.fps = pygame.time.Clock()
         self.keys = pygame.key.get_pressed()
+        self.score = 0
         # start position Snake
-        self.snake_pos = [400, 200]
-        self.snake_body = [[400, 200], 
-                            [390, 200], 
-                            [380, 200], 
-                            [370, 200]
+        self.snake_pos = [50, 100]
+        self.snake_body = [
+                            [50, 100], 
+                            [40, 100], 
+                            [30, 100], 
+                            [20, 100]
                             ]
+        # start fruit position
+        self.fruit_pos = [random.randrange(1, (self.width//10)) * 10,
+                  random.randrange(1, (self.height//10)) * 10]
+        self.fruit_spawn = True
 
-        self.direction = 'LEFT'
+
+        self.direction = 'RIGHT'
         self.newDirection = self.direction
         self.game_loop()
 
@@ -26,14 +35,20 @@ class Game:
 
         while run:
             print("neue Runde, direction: "+ str(self.direction)+ " ,newdirection: "+ str(self.newDirection))
-            self.direction = self.newDirection
             self.fps.tick(15)
+            self.direction = self.newDirection
+            
             BG_COLOR = pygame.Color(73, 241, 202)
             self.screen.fill(BG_COLOR)
-            # Standard für Games sind 3 Methoden:
-            self.input()    # player eingabe
-            self.update()   # screen Update mit Ereignissen
-            self.draw()     # screen zeichnen
+            # Score geschichte
+            self.score_font = pygame.font.SysFont('times new roman', 20)
+            self.score_surface = self.score_font.render('Score : ' + str(self.score), True, pygame.Color(255, 255, 255))
+            self.score_rect = self.score_surface.get_rect()
+            self.screen.blit(self.score_surface, self.score_rect)
+            # Standard für Games sind 3 Methoden (*):
+            self.input()        # *player eingabe
+            self.update()       # *screen Update mit Ereignissen
+            self.draw()         # *screen zeichnen
 
             pygame.display.flip()
 
@@ -80,31 +95,48 @@ class Game:
         if self.direction == 'LEFT':
                 self.snake_pos[0] -= 10
                 print("geht links1")
+        # Snake wächst
+        self.snake_body.insert(0, list(self.snake_pos))
+        if self.snake_pos[0] == self.fruit_pos[0] and self.snake_pos[1] == self.fruit_pos[1]:
+            self.score += 1
+            self.fruit_spawn = False
+        else:
+            self.snake_body.pop()
 
-
+        if not self.fruit_spawn:
+            self.fruit_pos = [random.randrange(1, (self.width//10)) * 10,
+                              random.randrange(1, (self.height/10)) * 10]
+        self.fruit_spawn = True
+    
     def update(self):
         # Snake berührt sich = GameOver
         for block in self.snake_body[1:]:
             if self.snake_pos[0] == block[0] and self.snake_pos[1] == block[1]:
-                pass
-                #self.reset()
+                self.reset()
         # Snake berührt Fenster:
         if self.snake_pos[1] < 0:
             self.reset()
-            print("kaputt1")
         if self.snake_pos[0] < 0:
             self.reset()
-            print("kaputt2")
 
 
     def draw(self):
         # SnakeBody Zeichnen in voller Länge mit for-Schleife
-        for self.snake_pos in self.snake_body:
-            pygame.draw.rect(self.screen, pygame.Color(242, 135, 73), pygame.Rect(self.snake_pos[0], self.snake_pos[1], 10, 10))
+        for self.pos in self.snake_body:
+            pygame.draw.rect(self.screen, pygame.Color(242, 135, 73), pygame.Rect(self.pos[0], self.pos[1], 10, 10))
+        
+        pygame.draw.rect(self.screen, pygame.Color(255, 0, 0), pygame.Rect(
+        self.fruit_pos[0], self.fruit_pos[1], 10, 10))
 
     def reset(self):
-        self.snake_pos = [400, 200]
-        self.snake_body = [[400, 200], [390, 200], [380, 200], [370, 200]]
-
+        self.direction = 'RIGHT'
+        self.score = 0
+        self.snake_pos = [50, 100]
+        self.snake_body = [
+                            [50, 100], 
+                            [40, 100], 
+                            [30, 100], 
+                            [20, 100]
+                            ]
 
 Game()
