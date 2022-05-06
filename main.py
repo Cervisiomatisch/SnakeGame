@@ -107,13 +107,13 @@ class Game:
         if self.direction == 'UP':
             self.snake_pos[1] -= 10
             #print("geht hoch")
-        if self.direction == 'DOWN':
+        elif self.direction == 'DOWN':
             self.snake_pos[1] += 10
             #print("geht runter")
-        if self.direction == 'RIGHT':
+        elif self.direction == 'RIGHT':
             self.snake_pos[0] += 10
             #print("geht rechts")
-        if self.direction == 'LEFT':
+        elif self.direction == 'LEFT':
             self.snake_pos[0] -= 10
             #print("geht links1")
 
@@ -122,15 +122,15 @@ class Game:
         for block in self.snake_body[1:]:
             if self.snake_pos[0] == block[0] and self.snake_pos[1] == block[1]:
                 self.reset()
+                
         # Snake berührt Fenster:
         if self.snake_pos[1] < 0:
             self.reset()
-        if self.snake_pos[0] < 0:
+        elif self.snake_pos[0] < 0:
             self.reset()
-        # snake touching bottom / right
-        if self.snake_pos[1] > self.height:
+        elif self.snake_pos[1] > self.height:
             self.reset()
-        if self.snake_pos[0] > self.width:
+        elif self.snake_pos[0] > self.width:
             self.reset()
 
 
@@ -143,7 +143,8 @@ class Game:
         self.fruit_pos[0], self.fruit_pos[1], 10, 10))
 
     def reset(self):
-        self.direction = 'RIGHT'
+        # set new direction to empty string to stop movement
+        self.newDirection = ''
         self.score = 0
         self.snake_pos = [50, 100]
         self.snake_body = [
