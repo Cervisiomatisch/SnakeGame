@@ -118,6 +118,11 @@ class Game:
             self.reset()
         if self.snake_pos[0] < 0:
             self.reset()
+        # snake touching bottom / right
+        if self.snake_pos[1] > self.height:
+            self.reset()
+        if self.snake_pos[0] > self.width:
+            self.reset()
 
 
     def draw(self):
