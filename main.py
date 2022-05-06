@@ -74,13 +74,13 @@ class Game:
         
         # Playerinput korrigieren, dass Snake nicht sofort in die gegengesetzte Richtung kann
         if self.newDirection == 'UP' and self.direction != 'DOWN':
-            self.direction == 'UP'
+            self.direction = 'UP'
         if self.newDirection == 'DOWN' and self.direction != 'UP':
-            self.direction == 'DOWN'
+            self.direction = 'DOWN'
         if self.newDirection == 'RIGHT' and self.direction != 'LEFT':
-            self.direction == 'RIGHT'
+            self.direction = 'RIGHT'
         if self.newDirection == 'LEFT' and self.direction != 'RIGHT':
-            self.direction == 'LEFT'
+            self.direction = 'LEFT'
 
         # Snake bewegen 
         if self.direction == 'UP':
