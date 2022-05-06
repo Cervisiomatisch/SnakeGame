@@ -34,7 +34,7 @@ class Game:
         run = True
 
         while run:
-            print("neue Runde, direction: "+ str(self.direction)+ " ,newdirection: "+ str(self.newDirection))
+            #print("neue Runde, direction: "+ str(self.direction)+ " ,newdirection: "+ str(self.newDirection))
             self.fps.tick(15)
             self.direction = self.newDirection
             
@@ -57,44 +57,37 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
-        # Playerinput
+            # Playerinput
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     self.newDirection = 'UP'
-                    print("Oben gedrückt")
-                if event.key == pygame.K_DOWN:
+                    #print("Oben gedrückt")
+                elif event.key == pygame.K_DOWN:
                     self.newDirection = 'DOWN'
-                    print("Runter gedrückt")
-                if event.key == pygame.K_LEFT:
+                    #print("Runter gedrückt")
+                elif event.key == pygame.K_LEFT:
                     self.newDirection = 'LEFT'
-                    print("Links gedrückt")
-                if event.key == pygame.K_RIGHT:
+                    #print("Links gedrückt")
+                elif event.key == pygame.K_RIGHT:
                     self.newDirection = 'RIGHT'
-                    print("Rechts gedrückt")
+                    #print("Rechts gedrückt")
         
-        # Playerinput korrigieren, dass Snake nicht sofort in die gegengesetzte Richtung kann
-        if self.newDirection == 'UP' and self.direction != 'DOWN':
-            self.direction = 'UP'
-        elif self.newDirection == 'DOWN' and self.direction != 'UP':
-            self.direction = 'DOWN'
-        elif self.newDirection == 'RIGHT' and self.direction != 'LEFT':
-            self.direction = 'RIGHT'
-        elif self.newDirection == 'LEFT' and self.direction != 'RIGHT':
-            self.direction = 'LEFT'
+                # Playerinput korrigieren, dass Snake nicht sofort in die gegengesetzte Richtung kann
+                if self.newDirection == 'UP' and self.direction != 'DOWN':
+                    self.direction = 'UP'
+                    print("dir set UP")
+                elif self.newDirection == 'DOWN' and self.direction != 'UP':
+                    self.direction = 'DOWN'
+                    print("dir set DOWN")
+                elif self.newDirection == 'RIGHT' and self.direction != 'LEFT':
+                    self.direction = 'RIGHT'
+                    print("dir set RIGHT")
+                elif self.newDirection == 'LEFT' and self.direction != 'RIGHT':
+                    self.direction = 'LEFT'
+                    print("dir set LEFT")
 
-        # Snake bewegen 
-        if self.direction == 'UP':
-                self.snake_pos[1] -= 10
-                print("geht hoch")
-        if self.direction == 'DOWN':
-                self.snake_pos[1] += 10
-                print("geht runter")
-        if self.direction == 'RIGHT':
-                self.snake_pos[0] += 10
-                print("geht rechts")
-        if self.direction == 'LEFT':
-                self.snake_pos[0] -= 10
-                print("geht links1")
+                self.newDirection = self.direction
+
         # Snake wächst
         self.snake_body.insert(0, list(self.snake_pos))
         if self.snake_pos[0] == self.fruit_pos[0] and self.snake_pos[1] == self.fruit_pos[1]:
@@ -109,6 +102,22 @@ class Game:
         self.fruit_spawn = True
     
     def update(self):
+        
+        # Snake bewegen
+        if self.direction == 'UP':
+            self.snake_pos[1] -= 10
+            #print("geht hoch")
+        if self.direction == 'DOWN':
+            self.snake_pos[1] += 10
+            #print("geht runter")
+        if self.direction == 'RIGHT':
+            self.snake_pos[0] += 10
+            #print("geht rechts")
+        if self.direction == 'LEFT':
+            self.snake_pos[0] -= 10
+            #print("geht links1")
+
+
         # Snake berührt sich = GameOver
         for block in self.snake_body[1:]:
             if self.snake_pos[0] == block[0] and self.snake_pos[1] == block[1]:
