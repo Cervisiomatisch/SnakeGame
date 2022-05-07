@@ -36,7 +36,6 @@ class Game:
         while run:
             print("neue Runde, direction: "+ str(self.direction)+ " ,newdirection: "+ str(self.newDirection))
             self.fps.tick(15)
-            self.direction = self.newDirection
             
             BG_COLOR = pygame.Color(73, 241, 202)
             self.screen.fill(BG_COLOR)
@@ -95,6 +94,7 @@ class Game:
         if self.direction == 'LEFT':
                 self.snake_pos[0] -= 10
                 print("geht links1")
+
         # Snake wächst
         self.snake_body.insert(0, list(self.snake_pos))
         if self.snake_pos[0] == self.fruit_pos[0] and self.snake_pos[1] == self.fruit_pos[1]:
